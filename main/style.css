@@ -1,81 +1,100 @@
-*{
+@import url('https://fonts.googleapis.com/css2?family=Bayon&display=swap');
+
+* {
   margin: 0;
   padding: 0;
 }
 
-.hero{
-  width: 100%;
-  margin: auto;
-  box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
-}
+nav {
+  padding-block: 1.625rem;
+  padding-left: 4.313rem;
+  box-shadow: 0px 4px 4px 0px #00000040;
 
-.navbar{
-  margin: 30px auto;
-  margin-bottom: 10px;
   display: flex;
   align-items: center;
 }
 
-.navbar p{
-  font-family: "Bayon", sans-serif;
+nav img {
+  width: 30px;
+  height: 30px;
+}
+
+nav p {
+  font-family: Bayon;
+  font-size: 36px;
   font-weight: 400;
-  font-style: normal;
-  font-size: 20px;
-  position:relative;
-  left:80px; 
-  bottom:12px;
+  line-height: 65.04px;
+  text-align: left;
 }
 
-.title .pink{
-  color: rgb(232, 65, 93)
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.title p{
+.title {
+  margin-top: 100px;
+  font-family: Bayon;
+  font-size: 46px;
+  font-weight: 400;
+  line-height: 83.11px;
   text-align: center;
-  font-family: "Bayon", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 30px;
-  margin-top: 5%;
 }
 
-.upload-box{
-  margin: auto;
-  width: 50%;
-  padding: 10px;
-  position: relative;
-  width: 500px;
-  height: 300px;
-  border: 1px #000;
-  border-color: #ffffff;
+.title .pink {
+  color: #ff0f7b;
+}
+
+.upload-box {
+  width: auto;
+  min-width: 706px;
+  height: auto;
+  min-height: 419px;
+
+  margin-top: 45px;
+  padding: 20px;
+
   border-radius: 27px;
-  box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
-}
+  box-shadow: 0px 0px 50px 12px #0000001a;
 
-.upload-image{
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-}
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
-.upload-image p{
-  text-align: center;
-  font-family: "Roboto", sans-serif;
+  font-family: Roboto;
+  font-size: 20px;
   font-weight: 400;
-  font-style: normal;
-  color: #F89B29;
-  font-size: 12px;
-  word-spacing: 0.5em;
+  line-height: 23.44px;
+  text-align: center;
+}
+
+.image-input-button {
+  width: 340px;
+  height: 60px;
+  border-radius: 18px;
+  background: #f89b29;
+
+  color: #ffffff;
+
+  display: grid;
+  place-content: center;
+}
+
+.upload-box p {
+  margin-top: 11px;
+  color: #f89b29;
+}
+
+.upload-box {
 }
 
 /* ------------- PAGE 2 -----------------------*/
 
 .loader {
-  border: 16px solid #f3f3f3; 
-  border-top: 16px solid #F89B29;
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid #f89b29;
   border-radius: 50%;
   width: 50px;
   height: 50px;
@@ -83,8 +102,12 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /*----------------------PAGE 3-------------------------- */
@@ -107,14 +130,14 @@ img {
   margin-bottom: 11px;
   width: 250px;
   align-items: center;
-  background-color: #F89B29;
+  background-color: #f89b29;
   border: 0;
   border-radius: 100px;
   box-sizing: border-box;
   color: #ffffff;
   cursor: pointer;
   display: inline-flex;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-weight: 400;
   font-size: 14px;
   line-height: 23px;
@@ -129,42 +152,43 @@ img {
   padding-right: 20px;
   text-align: center;
   touch-action: manipulation;
-  transition: background-color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s, box-shadow 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s, color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s;
+  transition: background-color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s,
+    box-shadow 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s,
+    color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s;
   user-select: none;
   -webkit-user-select: none;
   vertical-align: middle;
 }
 
 .button-orange:hover,
-.button-orange:focus { 
+.button-orange:focus {
   background-color: #f89b29c7;
   color: #ffffff;
 }
 
 .button-orange:active {
   background: #f89b29a0;
-  color: rgb(255, 255, 255, .7);
+  color: rgb(255, 255, 255, 0.7);
 }
 
-.button-orange:disabled { 
+.button-orange:disabled {
   cursor: not-allowed;
-  background: #F89B29;
-  color: #F89B29;
+  background: #f89b29;
+  color: #f89b29;
 }
-
 
 .button-pink {
   margin-bottom: 11px;
   width: 250px;
   align-items: center;
-  background-color: #FF0F7B;
+  background-color: #ff0f7b;
   border: 0;
   border-radius: 100px;
   box-sizing: border-box;
   color: #ffffff;
   cursor: pointer;
   display: inline-flex;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-weight: 400;
   font-size: 14px;
   line-height: 23px;
@@ -179,25 +203,27 @@ img {
   padding-right: 20px;
   text-align: center;
   touch-action: manipulation;
-  transition: background-color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s, box-shadow 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s, color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s;
+  transition: background-color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s,
+    box-shadow 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s,
+    color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s;
   user-select: none;
   -webkit-user-select: none;
   vertical-align: middle;
 }
 
 .button-pink:hover,
-.button-pink:focus { 
+.button-pink:focus {
   background-color: #ff0f7baa;
   color: #ffffff;
 }
 
 .button-pink:active {
   background: #ff0f7bca;
-  color: rgb(255, 255, 255, .7);
+  color: rgb(255, 255, 255, 0.7);
 }
 
-.button-pink:disabled { 
+.button-pink:disabled {
   cursor: not-allowed;
-  background: #FF0F7B;
-  color: #FF0F7B;
+  background: #ff0f7b;
+  color: #ff0f7b;
 }

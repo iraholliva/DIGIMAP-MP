@@ -1,35 +1,33 @@
 <html>
   <head>
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bayon&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bayon&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="icon" href="./images/logo.svg" type="image/svg+xml" />
+    <title>DEVHANCE</title>
   </head>
-</html>
-<body>
-  <div class="hero">
-    <div class="navbar">
-      <p>DEVHANCE</p>
-    </div>
-  </div>
 
-  <div class="body">
-    <div class="title">
-        <p>
-          SEE THE
-          <span class="pink">CLARITY</span>
-          IN YOUR
-          <span class="pink">MEMORIES</span>.
-        </p>
-    </div>
-    <div class="upload-box">
-      <div class="upload-image">
-        <button class="button-orange" role="button">Upload Image</button>
-        <p>or drag and drop an image in this box</p>
+  <body>
+    <nav>
+      <img src="./images/logo.svg" alt="DEVHANCE logo" />
+      <p>DEVHANCE</p>
+    </nav>
+
+    <main>
+      <div class="title">
+        SEE THE
+        <span class="pink">CLARITY</span>
+        IN YOUR
+        <span class="pink">MEMORIES</span>.
       </div>
-    </div>
-  </div>
-</body>
+
+      <div class="upload-box">
+        <input type="file" id="image-input" style="display: none" />
+        <label for="image-input" class="image-input-button">Upload Image</label>
+        <p>or drag and drop an image into this box</p>
+      </div>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
