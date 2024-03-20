@@ -22,12 +22,27 @@
       </div>
 
       <div class="upload-box">
-        <input type="file" id="image-input" style="display: none" />
-        <label for="image-input" class="image-input-button">Upload Image</label>
-        <p>or drag and drop an image into this box</p>
+        <label for="image-input" class="input-wrapper">
+          <input type="file" id="image-input" style="display: none" />
+          <label for="image-input" class="image-input-button"
+            >Upload Image</label
+          >
+          <p>or drag and drop an image into this box</p>
+        </label>
+
+        <div class="loader" id="loader" style="display: none"></div>
+      </div>
+
+      <div class="choices" style="display: none">
+        <button class="button-pink" id="saveButton" role="button">
+          Save Image
+        </button>
+        <button class="button-orange" id="reload-button" role="button">
+          Upload Another
+        </button>
       </div>
     </main>
 
-    <script src="./script.js"></script>
+    <script src="./script.js" type="module"></script>
   </body>
 </html>

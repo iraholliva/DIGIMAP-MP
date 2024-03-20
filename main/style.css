@@ -47,21 +47,20 @@ main {
 }
 
 .upload-box {
-  width: auto;
-  min-width: 706px;
+  /* width: auto; */
+  width: 706px;
   height: auto;
   min-height: 419px;
 
   margin-top: 45px;
   padding: 20px;
 
+  box-sizing: border-box;
   border-radius: 27px;
   box-shadow: 0px 0px 50px 12px #0000001a;
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-content: center;
 
   font-family: Roboto;
   font-size: 20px;
@@ -70,7 +69,15 @@ main {
   text-align: center;
 }
 
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .image-input-button {
+  all: unset;
   width: 340px;
   height: 60px;
   border-radius: 18px;
@@ -80,6 +87,7 @@ main {
 
   display: grid;
   place-content: center;
+  content: 'Upload Image';
 }
 
 .upload-box p {
@@ -87,7 +95,12 @@ main {
   color: #f89b29;
 }
 
-.upload-box {
+.upload-box img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
 }
 
 /* ------------- PAGE 2 -----------------------*/
@@ -112,45 +125,45 @@ main {
 
 /*----------------------PAGE 3-------------------------- */
 
-img {
+/* img {
   width: 300px;
   height: 250px;
-}
+} */
 
 .choices {
-  position: absolute;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  margin-top: 4%;
+  margin-top: 45px;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
 /*----------------------BUTTONS------------------ */
 .button-orange {
+  width: 340px;
+  height: 60px;
   margin-bottom: 11px;
-  width: 250px;
-  align-items: center;
+  padding: 0;
+  padding-left: 20px;
+  padding-right: 20px;
+
   background-color: #f89b29;
   border: 0;
   border-radius: 100px;
   box-sizing: border-box;
-  color: #ffffff;
-  cursor: pointer;
+
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
   font-family: 'Roboto', sans-serif;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 20px;
   line-height: 23px;
-  justify-content: center;
-  line-height: 20px;
-  max-width: 480px;
-  min-height: 40px;
-  min-width: 0px;
-  overflow: hidden;
-  padding: 0px;
-  padding-left: 20px;
-  padding-right: 20px;
   text-align: center;
+  color: #ffffff;
+
   touch-action: manipulation;
   transition: background-color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s,
     box-shadow 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s,
@@ -178,30 +191,30 @@ img {
 }
 
 .button-pink {
+  width: 340px;
+  height: 60px;
   margin-bottom: 11px;
-  width: 250px;
-  align-items: center;
-  background-color: #ff0f7b;
-  border: 0;
-  border-radius: 100px;
-  box-sizing: border-box;
-  color: #ffffff;
-  cursor: pointer;
-  display: inline-flex;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 23px;
-  justify-content: center;
-  line-height: 20px;
-  max-width: 480px;
-  min-height: 40px;
-  min-width: 0px;
-  overflow: hidden;
   padding: 0px;
   padding-left: 20px;
   padding-right: 20px;
+
+  background-color: #ff0f7b;
+  border: 0;
+  box-sizing: border-box;
+  border-radius: 100px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 23px;
   text-align: center;
+  color: #ffffff;
+
   touch-action: manipulation;
   transition: background-color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s,
     box-shadow 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s,
