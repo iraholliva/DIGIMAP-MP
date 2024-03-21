@@ -1,9 +1,9 @@
 import {
   histogramEqualization,
   applyGammaCorrection,
+  colorCorrection // Import the colorCorrection function
 } from './imageProcessing.js';
 
-// add image processing functions here
 document.getElementById('image-input').addEventListener('change', (e) => {
   let file = e.target.files[0];
   let reader = new FileReader();
@@ -17,7 +17,7 @@ document.getElementById('image-input').addEventListener('change', (e) => {
     img.src = imageDataUrl;
 
     img.onload = function () {
-      // Make img into canvas so we can do shit w it
+      // Make img into canvas so we can work with it
       let canvas = document.createElement('canvas');
       canvas.width = img.width;
       canvas.height = img.height;
@@ -25,25 +25,23 @@ document.getElementById('image-input').addEventListener('change', (e) => {
       ctx.drawImage(img, 0, 0, img.width, img.height);
       let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-      //
-      //
-      // Dump all image enhancement functions here
+      // Apply image enhancement functions
       let equalizedImageData = histogramEqualization(imageData);
-      let gammaCorrectedImageData = applyGammaCorrection(
-        equalizedImageData,
-        2.2
-      );
+      let gammaCorrectedImageData = applyGammaCorrection(equalizedImageData, 2.2);
+      
+      // Color Correction
+      let redScale = 1.1; // Adjust the red scale factor as needed
+      let greenScale = 1.0; // Adjust the green scale factor as needed
+      let blueScale = 0.9; // Adjust the blue scale factor as needed
+      let colorCorrectedImageData = colorCorrection(gammaCorrectedImageData, redScale, greenScale, blueScale);
 
-      // ^^^
-      //
-      //
-      // Turn data back into image
-      ctx.putImageData(gammaCorrectedImageData, 0, 0);
+      // Turn processed data back into image
+      ctx.putImageData(colorCorrectedImageData, 0, 0);
       let processedImageUrl = canvas.toDataURL();
       let processedImg = document.createElement('img');
       processedImg.src = processedImageUrl;
 
-      // Places image into upload-box and update page
+      // Place image into upload-box and update page
       container.innerHTML = '';
       container.appendChild(processedImg);
       setUpPageFinishedView();

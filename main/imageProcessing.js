@@ -53,3 +53,19 @@ export function applyGammaCorrection(imageData, gamma) {
 
   return imageData;
 }
+
+// Color Correction
+export function colorCorrection(imageData, redScale, greenScale, blueScale) {
+  const pixels = imageData.data;
+  const numPixels = pixels.length / 4; // RGBA channels
+
+  // Apply color correction
+  for (let i = 0; i < numPixels; i++) {
+      pixels[i * 4] *= redScale; // Red channel
+      pixels[i * 4 + 1] *= greenScale; // Green channel
+      pixels[i * 4 + 2] *= blueScale; // Blue channel
+  }
+
+  return imageData;
+}
+
