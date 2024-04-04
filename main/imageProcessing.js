@@ -1,119 +1,91 @@
-// Add your image processing code here
-
-// BS functions, just stuff i got from google
-export function histogramEqualization(imageData, sigma) {
-  // Apply Gaussian Low Pass Filter
-  imageData = applyGaussianLowPass(imageData, sigma);
-
-  const pixels = imageData.data;
-  const numPixels = pixels.length / 4; // RGBA channels
-
-  for (let channel = 0; channel < 3; channel++) {
-    // Compute histogram
-    const histogram = new Array(256).fill(0);
-    for (let i = 0; i < numPixels; i++) {
-      const intensity = pixels[i * 4 + channel];
-      histogram[intensity]++;
-    }
-
-    // Compute cumulative distribution function (CDF)
-    const cdf = [];
-    let sum = 0;
-    for (let i = 0; i < 256; i++) {
-      sum += histogram[i];
-      cdf.push(sum);
-    }
-
-    // Normalize CDF
-    const minCdf = cdf.find((val) => val > 0);
-    const maxCdf = cdf[cdf.length - 1];
-    const scale = 255 / (maxCdf - minCdf);
-
-    // Apply equalization
-    for (let i = 0; i < numPixels; i++) {
-      const intensity = pixels[i * 4 + channel];
-      const equalizedIntensity = Math.round((cdf[intensity] - minCdf) * scale);
-      pixels[i * 4 + channel] = equalizedIntensity;
-    }
+function imhist(image) {
+  console.log(image);
+  let hist = new Array(256).fill(0);
+  for (let i = 0; i < image.length; i++) {
+      hist[image[i]]++;
   }
-
-  return imageData;
+  return hist;
 }
 
-// Gaussian Low Pass Filter
-function applyGaussianLowPass(imageData, sigma) {
-  const pixels = imageData.data;
-  const width = imageData.width;
-  const height = imageData.height;
-  const newData = new Uint8ClampedArray(pixels.length);
+export function imWTHeq(imageData, Wout_list = new Array(10).fill(0), r = 0.5, v = 0.5) {
+  console.log(imageData); //debug
 
-  const kernelSize = Math.ceil(sigma * 3) * 2 + 1;
-  const halfKernel = Math.floor(kernelSize / 2);
-  const kernel = new Array(kernelSize).fill(0).map(() => new Array(kernelSize).fill(0));
-
-  // Generate Gaussian kernel
-  let sum = 0;
-  for (let x = -halfKernel; x <= halfKernel; x++) {
-    for (let y = -halfKernel; y <= halfKernel; y++) {
-      const exponent = -(x * x + y * y) / (2 * sigma * sigma);
-      const weight = Math.exp(exponent) / (2 * Math.PI * sigma * sigma);
-      kernel[x + halfKernel][y + halfKernel] = weight;
-      sum += weight;
-    }
-  }
-
-  // Normalize kernel
-  for (let i = 0; i < kernelSize; i++) {
-    for (let j = 0; j < kernelSize; j++) {
-      kernel[i][j] /= sum;
-    }
-  }
-
-  // Convolution
-  for (let x = 0; x < width; x++) {
-    for (let y = 0; y < height; y++) {
-      let r = 0, g = 0, b = 0, a = 0;
-      for (let i = -halfKernel; i <= halfKernel; i++) {
-        for (let j = -halfKernel; j <= halfKernel; j++) {
-          const pixelX = Math.min(Math.max(x + i, 0), width - 1);
-          const pixelY = Math.min(Math.max(y + j, 0), height - 1);
-          const index = (pixelY * width + pixelX) * 4;
-          const weight = kernel[i + halfKernel][j + halfKernel];
-          r += pixels[index] * weight;
-          g += pixels[index + 1] * weight;
-          b += pixels[index + 2] * weight;
-          a += pixels[index + 3] * weight;
-        }
-      }
-      const index = (y * width + x) * 4;
-      newData[index] = r;
-      newData[index + 1] = g;
-      newData[index + 2] = b;
-      newData[index + 3] = a;
-    }
-  }
-
-  // Update image data
-  for (let i = 0; i < pixels.length; i++) {
-    pixels[i] = newData[i];
-  }
-
-  return imageData;
-}
-
-
-// Color Correction
-export function colorCorrection(imageData, redScale, greenScale, blueScale) {
-  const pixels = imageData.data;
+  const pixels = imageData;
   const numPixels = pixels.length / 4; // RGBA channels
-
-  // Apply color correction
+  
+  // Compute the histogram
+  let hist = new Array(256).fill(0);
   for (let i = 0; i < numPixels; i++) {
-      pixels[i * 4] *= redScale; // Red channel
-      pixels[i * 4 + 1] *= greenScale; // Green channel
-      pixels[i * 4 + 2] *= blueScale; // Blue channel
+    const intensity = pixels[i * 4]; // Assuming RGBA format, get the intensity value
+    hist[intensity]++;
   }
 
-  return imageData;
+  // Normalize the histogram to get PMF
+  let PMF = hist.map(val => val / numPixels);
+
+  // Calculate Pl and Pu
+  let Pl = 1e-4;
+  let Pu = v * Math.max(...PMF);
+
+  // Compute the weighted thresholded PMF (Pwt)
+  let Pwt = PMF.map(pmf => {
+    if (pmf < Pl) {
+      return 0;
+    } else if (pmf > Pu) {
+      return Pu;
+    } else {
+      return Math.pow((pmf - Pl) / (Pu - Pl), r) * Pu;
+    }
+  });
+
+  // Compute the cumulative distribution function (Cwt)
+  let Cwt = [];
+  let sum = 0;
+  for (let i = 0; i < Pwt.length; i++) {
+    sum += Pwt[i];
+    Cwt.push(sum);
+  }
+
+  // Normalize Cwt to get Cwtn
+  let Cwtn = Cwt.map(val => val / Cwt[Cwt.length - 1]);
+
+  // Calculate Win
+  let Win = PMF.filter(val => val > 0).length;
+
+  // Calculate Wout
+  let Gmax = 1.5;
+  let Wout = Math.min(255, Gmax * Win);
+  if (Wout_list.every(val => val > 0)) {
+    Wout = (Wout_list.reduce((acc, curr) => acc + curr, 0) + Wout) / (1 + Wout_list.length);
+  }
+
+  // Apply WTHE method to each pixel
+  let Ftilde = [];
+  for (let i = 0; i < numPixels; i++) {
+    const intensity = pixels[i * 4]; // Assuming RGBA format, get the intensity value
+    Ftilde.push(Wout * Cwtn[intensity]);
+  }
+
+  // Adjust pixel values by the mean adjustment
+  let Madj = pixels.reduce((acc, curr) => acc + curr) / pixels.length - Ftilde.reduce((acc, curr) => acc + curr) / Ftilde.length;
+  Ftilde = Ftilde.map(val => val + Madj);
+
+  // Clamp pixel values to the range [0, 255] and round them
+  Ftilde = Ftilde.map(val => Math.max(0, Math.min(255, val)));
+  Ftilde = Ftilde.map(val => Math.round(val));
+  
+  // Construct the processed image data array
+  let flatProcessedData = [];
+  for (let i = 0; i < numPixels; i++) {
+    flatProcessedData.push(Ftilde[i]); //R
+    flatProcessedData.push(Ftilde[i]); //G
+    flatProcessedData.push(Ftilde[i]); //B
+    flatProcessedData.push(255); // Set alpha channel to 255 (fully opaque)
+  }
+
+
+  return [processedImageData, Wout];
 }
+
+
 

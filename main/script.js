@@ -1,4 +1,4 @@
-import { colorCorrection, histogramEqualization } from './imageProcessing.js';
+import { imWTHeq } from './imageProcessing.js';
 
 document.getElementById('image-input').addEventListener('change', (e) => {
   let file = e.target.files[0];
@@ -21,20 +21,20 @@ document.getElementById('image-input').addEventListener('change', (e) => {
       ctx.drawImage(img, 0, 0, img.width, img.height);
       let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-      // Compute sigma based on the noise standard deviation
-      const sigma = computeSigma(imageData);
+      // Apply WTHE method
+      let [processedImageData, Wout] = imWTHeq(imageData.data);
 
-      // Apply histogram equalization with Gaussian filter
-      let equalizedImageData = histogramEqualization(imageData, sigma);
+      // Flatten the processed image data
+      let flatProcessedData = processedImageData.flat();
 
-      // Apply color correction
-      let redScale = 1.0;
-      let greenScale = 1.0;
-      let blueScale = 1.0;
-      let colorCorrectedImageData = colorCorrection(equalizedImageData, redScale, greenScale, blueScale);
+      // Create ImageData from the flattened data
+      let processedImageDataObject = new ImageData(new Uint8ClampedArray(flatProcessedData), canvas.width, canvas.height);
 
-      // Turn processed data back into image
-      ctx.putImageData(colorCorrectedImageData, 0, 0);
+      // Clear canvas and put the processed image data
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.putImageData(processedImageDataObject, 0, 0);
+
+      // Convert canvas to image
       let processedImageUrl = canvas.toDataURL();
       let processedImg = document.createElement('img');
       processedImg.src = processedImageUrl;
@@ -50,6 +50,10 @@ document.getElementById('image-input').addEventListener('change', (e) => {
     reader.readAsDataURL(file);
   }
 });
+
+
+
+
 
 document.getElementById('saveButton').addEventListener('click', () => {
   let processedImg = document.querySelector('.upload-box img');
@@ -73,20 +77,4 @@ function setUpPageProcessingView() {
 function setUpPageFinishedView() {
   document.querySelector('.title').innerHTML = 'DEVHANCED!';
   document.querySelector('.choices').style.display = 'block';
-}
-
-// Function to compute sigma based on the noise standard deviation
-function computeSigma(imageData) {
-// @TODO !!!!!!!!!!!!!!!!!!!
-  const noiseStdDev = computeNoiseStdDev(imageData);
-
-  // Adjust scaleFactor as needed
-  const scaleFactor = 1; // Adjust this value based on experimentation
-  return noiseStdDev * scaleFactor;
-}
-
-// Function to compute the noise standard deviation 
-function computeNoiseStdDev(imageData) {
-  
-  return 0.5; //REPLACE WITH ACTUAL COMPUTATION
 }
