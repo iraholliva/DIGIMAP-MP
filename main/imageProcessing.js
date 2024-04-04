@@ -59,11 +59,11 @@ export function imWTHeq(imageData, Wout_list = new Array(10).fill(0), r = 0.5, v
     Wout = (Wout_list.reduce((acc, curr) => acc + curr, 0) + Wout) / (1 + Wout_list.length);
   }
 
-  // Apply WTHE method to each pixel
+  // Apply WTHE method to each pixel 
   let Ftilde = [];
   for (let i = 0; i < numPixels; i++) {
-    const intensity = pixels[i * 4]; // Assuming RGBA format, get the intensity value
-    Ftilde.push(Wout * Cwtn[intensity]);
+    const intensity = 0.2126 * pixels[i * 4] + 0.7152 * pixels[i * 4 + 1] + 0.0722 * pixels[i * 4 + 2]; // Luminance formula ????? eto yung galing sa chatgpt wala naman kwents
+    Ftilde.push(Wout * Cwtn[Math.round(intensity)]); // Use intensity to index Cwtn
   }
 
   // Adjust pixel values by the mean adjustment
@@ -77,15 +77,12 @@ export function imWTHeq(imageData, Wout_list = new Array(10).fill(0), r = 0.5, v
   // Construct the processed image data array
   let flatProcessedData = [];
   for (let i = 0; i < numPixels; i++) {
-    flatProcessedData.push(Ftilde[i]); //R
-    flatProcessedData.push(Ftilde[i]); //G
-    flatProcessedData.push(Ftilde[i]); //B
+    flatProcessedData.push(Ftilde[i]); //red
+    flatProcessedData.push(Ftilde[i]); //green
+    flatProcessedData.push(Ftilde[i]); //blue
     flatProcessedData.push(255); // Set alpha channel to 255 (fully opaque)
   }
 
 
-  return [processedImageData, Wout];
+  return [flatProcessedData, Wout];
 }
-
-
-
