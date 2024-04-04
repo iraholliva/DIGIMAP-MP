@@ -1,7 +1,4 @@
-import {
-  colorCorrection,
-  histogramEqualization
-} from './imageProcessing.js';
+import { colorCorrection, histogramEqualization } from './imageProcessing.js';
 
 document.getElementById('image-input').addEventListener('change', (e) => {
   let file = e.target.files[0];
@@ -24,8 +21,11 @@ document.getElementById('image-input').addEventListener('change', (e) => {
       ctx.drawImage(img, 0, 0, img.width, img.height);
       let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-      // Apply histogram equalization
-      let equalizedImageData = histogramEqualization(imageData);
+      // Compute sigma based on the noise standard deviation
+      const sigma = computeSigma(imageData);
+
+      // Apply histogram equalization with Gaussian filter
+      let equalizedImageData = histogramEqualization(imageData, sigma);
 
       // Apply color correction
       let redScale = 1.0;
@@ -73,4 +73,20 @@ function setUpPageProcessingView() {
 function setUpPageFinishedView() {
   document.querySelector('.title').innerHTML = 'DEVHANCED!';
   document.querySelector('.choices').style.display = 'block';
+}
+
+// Function to compute sigma based on the noise standard deviation
+function computeSigma(imageData) {
+// @TODO !!!!!!!!!!!!!!!!!!!
+  const noiseStdDev = computeNoiseStdDev(imageData);
+
+  // Adjust scaleFactor as needed
+  const scaleFactor = 1; // Adjust this value based on experimentation
+  return noiseStdDev * scaleFactor;
+}
+
+// Function to compute the noise standard deviation 
+function computeNoiseStdDev(imageData) {
+  
+  return 0.5; //REPLACE WITH ACTUAL COMPUTATION
 }
