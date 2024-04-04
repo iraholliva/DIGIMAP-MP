@@ -1,7 +1,6 @@
 import {
-  histogramEqualization,
-  applyGammaCorrection,
-  colorCorrection // Import the colorCorrection function
+  colorCorrection,
+  histogramEqualization
 } from './imageProcessing.js';
 
 document.getElementById('image-input').addEventListener('change', (e) => {
@@ -25,15 +24,14 @@ document.getElementById('image-input').addEventListener('change', (e) => {
       ctx.drawImage(img, 0, 0, img.width, img.height);
       let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-      // Apply image enhancement functions
+      // Apply histogram equalization
       let equalizedImageData = histogramEqualization(imageData);
-      let gammaCorrectedImageData = applyGammaCorrection(equalizedImageData, 2.2);
-      
-      // Color Correction
-      let redScale = 1.1; // Adjust the red scale factor as needed
-      let greenScale = 1.0; // Adjust the green scale factor as needed
-      let blueScale = 0.9; // Adjust the blue scale factor as needed
-      let colorCorrectedImageData = colorCorrection(gammaCorrectedImageData, redScale, greenScale, blueScale);
+
+      // Apply color correction
+      let redScale = 1.0;
+      let greenScale = 1.0;
+      let blueScale = 1.0;
+      let colorCorrectedImageData = colorCorrection(equalizedImageData, redScale, greenScale, blueScale);
 
       // Turn processed data back into image
       ctx.putImageData(colorCorrectedImageData, 0, 0);
@@ -58,7 +56,6 @@ document.getElementById('saveButton').addEventListener('click', () => {
   let link = document.createElement('a');
 
   link.href = processedImg.src;
-
   link.download = 'processed-image.png';
   link.click();
 });
